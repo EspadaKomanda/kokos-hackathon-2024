@@ -14,10 +14,10 @@ class ApplicationContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<User>().ToTable("Users");
-    modelBuilder.Entity<Profile>().ToTable("Profiles");
-    modelBuilder.Entity<Role>().ToTable("Roles");
-    modelBuilder.Entity<Subscription>().ToTable("Subscriptions");
+    modelBuilder.Entity<User>().ToTable("User");
+    modelBuilder.Entity<Profile>().ToTable("Profile");
+    modelBuilder.Entity<Role>().ToTable("Role");
+    modelBuilder.Entity<Subscription>().ToTable("Subscription");
 
     // In subscriptions FanId and PlayerId must be unique together
     modelBuilder.Entity<Subscription>()
