@@ -3,7 +3,7 @@ using UserService.Database.Models;
 
 namespace UserService.Database;
 
-class ApplicationContext : DbContext
+public class ApplicationContext : DbContext
 {
   public DbSet<User> Users { get; set; } = null!;
   public DbSet<Profile> Profiles { get; set; } = null!;
