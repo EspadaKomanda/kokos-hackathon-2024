@@ -21,7 +21,7 @@ environment instead.
 TOKEN = getenv("BOT_TOKEN") or exit("BOT_TOKEN not found in environment!")
 
 # DATABASE - Your database connection string.
-#    (Example: "")
+#    (Example: "postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]")
 DATABASE = getenv("DATABASE") or exit("DATABASE not found in environment!")
 
 # ADMINS - List of admin Telegram IDs with complete access.
