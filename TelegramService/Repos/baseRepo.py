@@ -1,5 +1,9 @@
 class BaseRepo:
 
+    """
+    BaseRepo represting universal CRUD methods for any model.
+    """
+    # Guess what, Roma, mine isn't asynchronous either.
     model = None
 
     def create(self, **kwargs):
