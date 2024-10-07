@@ -1,13 +1,12 @@
-from peewee import Model, PostgresqlDatabase
+from peewee import PostgresqlDatabase, Model
+
+from config import DATABASE
 
 
 class BaseModel(Model):
     """
     Base model class.
     """
-    @classmethod
-    def __init__(cls, db: PostgresqlDatabase):
-        cls.Meta.database = db
 
     class Meta:
-        database = None
+        database = PostgresqlDatabase(DATABASE)

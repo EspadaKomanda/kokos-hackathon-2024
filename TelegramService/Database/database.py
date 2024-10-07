@@ -1,5 +1,12 @@
 from config import DATABASE
 
+from Database.Models.admin import Admin
+from Database.Models.attachment import Attachment
+from Database.Models.attachmentSet import AttachmentSet
+from Database.Models.attachmentType import AttachmentType
+from Database.Models.channel import Channel
+from Database.Models.news import News
+
 from peewee import PostgresqlDatabase
 
 
@@ -19,7 +26,16 @@ class Database:
     async def __aenter__(self) -> PostgresqlDatabase:
         self._db.connect()
         with self._db.atomic():
-            self._db.create_tables([], safe=True)
+            self._db.create_tables(
+                [
+                    Admin,
+                    Attachment,
+                    AttachmentSet,
+                    AttachmentType,
+                    Channel,
+                    News
+                ],
+                safe=True)
         return self._db
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
