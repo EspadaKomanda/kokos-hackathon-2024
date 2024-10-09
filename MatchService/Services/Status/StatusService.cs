@@ -10,16 +10,17 @@ namespace MatchService.Services
 {
     public class StatusService : IStatusService
     {
+        //TODO: Add Logging
         private readonly IRepository<Status> _repository;
         public StatusService(IRepository<Status> repository)
         {
             _repository = repository;
         }
-        public bool Add(Status entity)
+        public async Task<bool> Add(Status entity)
         {
             try
             {
-                return _repository.Add(entity);
+                return await _repository.Add(entity);
             }
             catch (Exception ex)
             {
@@ -39,19 +40,19 @@ namespace MatchService.Services
                 throw new DeleteException(ex.Message);
             }
         }
-
-        public IQueryable<Status> FindById(long StatusId, FindOptions? findOptions = null)
+        //TODO: Add Caching
+        public async Task<Status> FindById(long StatusId, FindOptions? findOptions = null)
         {
             try
             {
-                return _repository.Find(x => x.StatusId == StatusId, findOptions);
+                return await _repository.FindOne(x => x.StatusId == StatusId, findOptions);
             }
             catch (Exception ex)
             {
                 throw new FindException(ex.Message);
             }
         }
-
+        //TODO: Add Caching
         public IQueryable<Status> GetAll(FindOptions? findOptions = null)
         {
             try

@@ -10,8 +10,8 @@ namespace MatchService.Services
     public interface IPlayerService
     {
         public IQueryable<Player> GetAll(FindOptions? findOptions = null);
-        public IQueryable<Player> FindById(long PlayerId, FindOptions? findOptions = null);
-        public bool Add(Player entity);
+        public Task<Player> FindById(long PlayerId, FindOptions? findOptions = null);
+        public Task<bool> Add(Player entity);
         public bool Update(Player entity);
         public bool Delete(Player entity);
     }

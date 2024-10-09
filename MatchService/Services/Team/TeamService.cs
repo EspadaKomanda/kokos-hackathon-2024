@@ -10,16 +10,17 @@ namespace MatchService.Services
 {
     public class TeamService : ITeamService
     {
+        //TODO: Add Logging
         private readonly IRepository<Team> _repository;
         public TeamService(IRepository<Team> repository)
         {
             _repository = repository;
         }
-        public bool Add(Team entity)
+        public async Task<bool> Add(Team entity)
         {
             try
             {
-                return _repository.Add(entity);
+                return await _repository.Add(entity);
             }
             catch(Exception ex)
             {
@@ -38,12 +39,12 @@ namespace MatchService.Services
                 throw new DeleteException(ex.Message);
             }
         }
-
-        public IQueryable<Team> FindById(long TeamId, FindOptions? findOptions = null)
+        //TODO: Add Caching
+        public async Task<Team> FindById(long TeamId, FindOptions? findOptions = null)
         {
             try
             {
-                return _repository.Find(x => x.TeamId == TeamId, findOptions);
+                return await _repository.FindOne(x => x.TeamId == TeamId, findOptions);
             }
             catch (Exception ex)
             {
@@ -51,6 +52,7 @@ namespace MatchService.Services
             }
         }
 
+        //TODO: Add Caching
         public IQueryable<Team> GetAll(FindOptions? findOptions = null)
         {
             try

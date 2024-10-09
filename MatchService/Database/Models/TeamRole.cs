@@ -12,7 +12,7 @@ namespace MatchService.Database.Models
         public long TeamRoleId { get; set; }
 
         [Required]
-        public required string Name { get; set; }
+        public string Name { get; set; }
         
         public ICollection<Player>? players { get; set; }
     }
