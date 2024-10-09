@@ -9,9 +9,9 @@ namespace MatchService.Services
 {
     public interface ITeamService
     {
-        public IQueryable<Team> GetAll(Team? findOptions = null);
-        public IQueryable<Team> FindById(long TeamId, FindOptions? findOptions = null);
-        public bool Add(Team entity);
+        public IQueryable<Team> GetAll(FindOptions? findOptions = null);
+        public Task<Team> FindById(long TeamId, FindOptions? findOptions = null);
+        public Task<bool> Add(Team entity);
         public bool Update(Team entity);
         public bool Delete(Team entity);
     }

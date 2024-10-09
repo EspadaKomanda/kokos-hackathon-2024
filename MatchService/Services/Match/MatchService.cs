@@ -10,16 +10,17 @@ namespace MatchService.Services
 {
     public class MatchService : IMatchService
     {
+        //TODO: Add Logging
         private readonly IRepository<Match> _repository;
         public MatchService(IRepository<Match> repository)
        {
             _repository = repository;
         }
-        public bool Add(Match entity)
+        public async Task<bool> Add(Match entity)
         {
             try
             {
-                return _repository.Add(entity);
+                return await _repository.Add(entity);
             }
             catch (Exception ex)
             {
@@ -39,12 +40,12 @@ namespace MatchService.Services
                 throw new DeleteException(ex.Message);
             }
         }
-
-        public IQueryable<Match> FindById(long MatchId, FindOptions? findOptions = null)
+        //TODO: Add Caching
+        public async Task<Match> FindById(long MatchId, FindOptions? findOptions = null)
         {
             try
             {
-                return _repository.Find(x => x.MatchId == MatchId, findOptions);
+                return await _repository.FindOne(x => x.MatchId == MatchId, findOptions);
             }
             catch (Exception ex)
             {
@@ -52,7 +53,8 @@ namespace MatchService.Services
             }
             
         }
-
+        //FIXME: Add taking by pages(10 matches per page)
+        //TODO: Add Caching
         public IQueryable<Match> GetAll(FindOptions? findOptions = null)
         {
             try

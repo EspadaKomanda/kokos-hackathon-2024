@@ -10,16 +10,17 @@ namespace MatchService.Services
 {
     public class TeamRoleService
     {
+        //TODO: Add Logging
         private readonly IRepository<TeamRole> _repository;
         public TeamRoleService(IRepository<TeamRole> repository)
         {
             _repository = repository;
         }
-        public bool Add(TeamRole entity)
+        public async Task<bool> Add(TeamRole entity)
         {
             try
             {
-                return _repository.Add(entity);
+                return await _repository.Add(entity);
             }
             catch(Exception ex)
             {
@@ -38,12 +39,12 @@ namespace MatchService.Services
                 throw new DeleteException(ex.Message);
             }
         }
-
-        public IQueryable<TeamRole> FindById(long TeamRoleId, FindOptions? findOptions = null)
+        //TODO: Add Caching
+        public async Task<TeamRole> FindById(long TeamRoleId, FindOptions? findOptions = null)
         {
             try
             {
-                return _repository.Find(x => x.TeamRoleId == TeamRoleId, findOptions);
+                return await _repository.FindOne(x => x.TeamRoleId == TeamRoleId, findOptions);
             }
             catch(Exception ex)
             {
@@ -51,6 +52,7 @@ namespace MatchService.Services
             }
         }
 
+        //TODO: Add Caching
         public IQueryable<TeamRole> GetAll(FindOptions? findOptions = null)
         {
             try

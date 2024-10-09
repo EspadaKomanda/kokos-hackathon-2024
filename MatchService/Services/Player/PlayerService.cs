@@ -10,16 +10,17 @@ namespace MatchService.Services
 {
     public class PlayerService : IPlayerService
     {
+        // TODO: Add caching
         private readonly IRepository<Player> _repository;
         public PlayerService(IRepository<Player> repository)
         {
             _repository = repository;
         }
-        public bool Add(Player entity)
+        public async Task<bool> Add(Player entity)
         {
             try
             {
-                return _repository.Add(entity);
+                return await _repository.Add(entity);
             }
             catch (Exception ex)
             {
@@ -39,19 +40,19 @@ namespace MatchService.Services
             }
         
         }
-
-        public IQueryable<Player> FindById(long PlayerId, FindOptions? findOptions = null)
+        //TODO: Add Caching
+        public async Task<Player> FindById(long PlayerId, FindOptions? findOptions = null)
         {
             try
             {
-                return _repository.Find(x => x.PlayerId == PlayerId, findOptions);
+                return await _repository.FindOne(x => x.PlayerId == PlayerId, findOptions);
             }
             catch (Exception ex)
             {
                 throw new FindException(ex.Message);
             }
         }
-
+        //TODO: Add Caching
         public IQueryable<Player> GetAll(FindOptions? findOptions = null)
         {
             try

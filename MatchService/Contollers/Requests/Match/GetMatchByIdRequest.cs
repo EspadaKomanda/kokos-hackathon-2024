@@ -7,6 +7,6 @@ namespace MatchService.Contollers.Requests
 {
     public class GetMatchByIdRequest
     {
-        public long match_id { get; set; }
+        public long MatchId { get; set; }
     }
 }

@@ -10,8 +10,8 @@ namespace MatchService.Services
     public interface ITeamRoleService
     {
         public IQueryable<TeamRole> GetAll(FindOptions? findOptions = null);
-        public IQueryable<TeamRole> FindById(long TeamRoleId, FindOptions? findOptions = null);
-        public bool Add(TeamRole entity);
+        public Task<TeamRole> FindById(long TeamRoleId, FindOptions? findOptions = null);
+        public Task<bool> Add(TeamRole entity);
         public bool Update(TeamRole entity);
         public bool Delete(TeamRole entity);
     }

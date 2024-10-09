@@ -14,11 +14,11 @@ namespace MatchService.Database.Models
         [ForeignKey("TeamId")]
         public long TeamId { get; set; }
         [Required]
-        public required Team Team { get; set; }
-        public long? user_id { get; set; }
+        public Team Team { get; set; }
+        public long? UserId { get; set; }
         [ForeignKey("TeamRoleId")]
         public long? TeamRoleId { get; set; }
         [Required]
-        public required TeamRole TeamRole { get; set; }
+        public TeamRole TeamRole { get; set; }
     }
 }

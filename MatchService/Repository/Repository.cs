@@ -15,15 +15,15 @@ namespace MatchService.Repository
         {
             _empDBContext = empDBContext;
         }
-        public bool Add(TEntity entity)
+        public async Task<bool> Add(TEntity entity)
         {
-            _empDBContext.Set<TEntity>().Add(entity);
-            return _empDBContext.SaveChanges()>= 0;
+            await _empDBContext.Set<TEntity>().AddAsync(entity);
+            return await _empDBContext.SaveChangesAsync()>= 0;
         }
-        public bool AddMany(IEnumerable<TEntity> entities)
+        public async Task<bool> AddMany(IEnumerable<TEntity> entities)
         {
-            _empDBContext.Set<TEntity>().AddRange(entities);
-            return _empDBContext.SaveChanges()>= 0;
+            await _empDBContext.Set<TEntity>().AddRangeAsync(entities);
+            return await _empDBContext.SaveChangesAsync()>= 0;
         }
         public bool Delete(TEntity entity)
         {
@@ -36,10 +36,11 @@ namespace MatchService.Repository
             _empDBContext.Set<TEntity>().RemoveRange(entities);
             return _empDBContext.SaveChanges()>= 0;
         }
-        public TEntity FindOne(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null)
+        public async Task<TEntity> FindOne(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null)
         {
-            return Get(findOptions).FirstOrDefault(predicate)!;
+            return await Get(findOptions).FirstOrDefaultAsync(predicate)!;
         }
+
         public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null)
         {
             return Get(findOptions).Where(predicate);
@@ -53,13 +54,13 @@ namespace MatchService.Repository
             _empDBContext.Set<TEntity>().Update(entity);
             return _empDBContext.SaveChanges()>= 0;
         }
-        public bool Any(Expression<Func<TEntity, bool>> predicate)
+        public async Task<bool> Any(Expression<Func<TEntity, bool>> predicate)
         {
-            return _empDBContext.Set<TEntity>().Any(predicate);
+            return await _empDBContext.Set<TEntity>().AnyAsync(predicate);
         }
-        public int Count(Expression<Func<TEntity, bool>> predicate)
+        public async Task<int> Count(Expression<Func<TEntity, bool>> predicate)
         {
-            return _empDBContext.Set<TEntity>().Count(predicate);
+            return await _empDBContext.Set<TEntity>().CountAsync(predicate);
         }
         private DbSet<TEntity> Get(FindOptions? findOptions = null)
         {
