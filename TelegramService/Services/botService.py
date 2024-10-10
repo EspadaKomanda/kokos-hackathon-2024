@@ -8,7 +8,13 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command, CommandObject
 from aiogram.types import Message
 
+from Services.adminService import AdminService
+from Services.channelService import ChannelService
+
 logger = logging.getLogger(__name__)
+
+adminService = AdminService()
+channelService = ChannelService()
 
 # All handlers should be attached to the Router (or Dispatcher)
 dp = Dispatcher()
@@ -20,12 +26,12 @@ bot = Bot(
 
 
 @dp.message(CommandStart())
+@adminService.requiresAdmin
 async def commandStartHandler(message: Message) -> None:
     """
     This handler receives messages with `/start` command
     """
-    if message.from_user.id not in ADMINS:
-        return
+    return channelService.status()
 
 
 @dp.message(Command("channels"))
