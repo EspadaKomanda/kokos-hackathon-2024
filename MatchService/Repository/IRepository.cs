@@ -13,7 +13,7 @@ namespace MatchService.Repository
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null);
         Task<bool> Add(TEntity entity);
         Task<bool> AddMany(IEnumerable<TEntity> entities);
-        Task<bool> Update(TEntity entity);
+        bool Update(TEntity entity);
         bool Delete(TEntity entity);
         bool DeleteMany(Expression<Func<TEntity, bool>> predicate);
         Task<bool> Any(Expression<Func<TEntity, bool>> predicate);

@@ -2,6 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 //TODO: Add Redis
 //TODO: Add CORS
 //TODO: Add Logging
+//TODO: Map services and controllers
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
