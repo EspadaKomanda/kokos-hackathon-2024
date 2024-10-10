@@ -22,16 +22,19 @@ class AdminService:
         """
         Add admins from array of Telegram IDs.
         """
+        added_amount = 0
         for tg_id in tg_ids:
-            admin = self.adminRepo.getByTgId(tg_id)
-            if admin is None:
-                self.adminRepo.create(tg_user_id=tg_id)
+            if self.addAdmin(tg_id):
+                added_amount += 1
+
+        logger.info("Added %s admins from config.", added_amount)
 
     def resetAdmins(self):
         """
         Delete all admins and re-add them from config.
         """
         self.adminRepo.deleteAll()
+        logger.info("Admin list has been reset.")
         self.addAdminsFromArray(ADMINS)
 
     def isTgUserAdmin(self, tg_id):
@@ -41,7 +44,7 @@ class AdminService:
         admin = self.adminRepo.getByTgId(tg_id)
         return admin is not None
 
-    def addAdmin(self, by_user_id=None, tg_id=None) -> bool:
+    def addAdmin(self, tg_id=None) -> bool:
         """
         Add an admin.
         """
@@ -49,11 +52,12 @@ class AdminService:
             logger.exception("tg_id for new admin was not provided")
             return False
 
-        if by_user_id is not None and not self.isTgUserAdmin(by_user_id):
-            logger.info("User %s is missing privilege to add new admin.", by_user_id)
-            return False
+        if self.isTgUserAdmin(tg_id):
+            logger.info("User %s is already an admin.", tg_id)
+            return True
 
         self.adminRepo.create(tg_id=tg_id)
+        logger.info("Admin %s has been added.", tg_id)
 
     def requiresAdmin(self, func):
         @wraps(func)
