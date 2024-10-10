@@ -59,7 +59,18 @@ class AdminService:
         self.adminRepo.create(tg_id=tg_id)
         logger.info("Admin %s has been added.", tg_id)
 
+    def getAdmins(self):
+        """
+        Get all admins.
+        """
+        return list(self.adminRepo.select())
+
     def requiresAdmin(self, func):
+        """
+        Decorator for admin-only functions.
+        Users without admin privileges will be informed
+        that they do not have access.
+        """
         @wraps(func)
         async def wrapper(message: Message, *args, **kwargs):
             if not self.isTgUserAdmin(message.from_user.id):
