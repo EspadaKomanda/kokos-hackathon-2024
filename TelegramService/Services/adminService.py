@@ -15,9 +15,6 @@ class AdminService:
     def __init__(self):
         self.adminRepo = AdminRepo()
 
-        # Initialize admins from config
-        self.addAdminsFromArray(ADMINS)
-
     def addAdminsFromArray(self, tg_ids):
         """
         Add admins from array of Telegram IDs.
@@ -56,7 +53,7 @@ class AdminService:
             logger.info("User %s is already an admin.", tg_id)
             return True
 
-        self.adminRepo.create(tg_id=tg_id)
+        self.adminRepo.create(tg_user_id=tg_id)
         logger.info("Admin %s has been added.", tg_id)
 
     def getAdmins(self):

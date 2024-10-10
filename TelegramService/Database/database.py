@@ -22,8 +22,8 @@ class Database:
     def __init__(self):
 
         self._db = PostgresqlDatabase(DATABASE)
-
-    async def __aenter__(self) -> PostgresqlDatabase:
+    
+    def init_db(self):
         self._db.connect()
         with self._db.atomic():
             self._db.create_tables(
@@ -36,6 +36,9 @@ class Database:
                     News
                 ],
                 safe=True)
+
+    async def __aenter__(self) -> PostgresqlDatabase:
+        self.init_db()
         return self._db
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):

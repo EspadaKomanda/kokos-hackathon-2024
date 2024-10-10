@@ -10,8 +10,7 @@ async def main() -> None:
 
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
-    async with Database():
-        pass
+    Database().init_db()
 
     await asyncio.gather(
         botPolling()
