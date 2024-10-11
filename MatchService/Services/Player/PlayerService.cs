@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using MatchService.Database.Models;
 using MatchService.Exceptions;
 using MatchService.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatchService.Services
 {
     public class PlayerService : IPlayerService
     {
-        // TODO: Add caching
+        // TODO: Add logging
         private readonly IRepository<Player> _repository;
         public PlayerService(IRepository<Player> repository)
         {

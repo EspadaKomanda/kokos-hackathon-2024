@@ -10,5 +10,6 @@ namespace MatchService.Contollers.Requestss.Player
         public long TeamId { get; set; }
         public long? UserId {get;set;}
         public long? TeamRoleId{get;set;}
+        public string Country {get;set;}
     }
 }

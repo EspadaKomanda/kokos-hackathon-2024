@@ -8,6 +8,7 @@ using MatchService.Database.Models;
 using MatchService.Exceptions;
 using MatchService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatchService.Contollers
 {
@@ -17,14 +18,17 @@ namespace MatchService.Contollers
     {
         //TODO: Add Logging
         private readonly ITeamService _teamService;
-
-        public TeamController(ITeamService teamService)
+        private readonly IMatchService _matchService;
+        private readonly IStatusService _statusService;
+        public TeamController(ITeamService teamService, IMatchService matchService, IStatusService statusService)
         {
             _teamService = teamService;
+            _matchService = matchService;
+            _statusService = statusService;
         }
 
         [HttpGet]
-        [Route("GetAll")]
+        [Route("getall")]
         public ActionResult<IQueryable<Team>> GetAll()
         {
             try
@@ -42,12 +46,12 @@ namespace MatchService.Contollers
         }
 
         [HttpGet]
-        [Route("GetById")]
-        public ActionResult<Team> GetById(GetTeamByIdRequest request)
+        [Route("getbyid/{teamId}")]
+        public ActionResult<Team> GetById(long teamId)
         {
             try
             {
-                return Ok(_teamService.FindById(request.TeamId));
+                return Ok(_teamService.FindById(teamId));
             }
             catch (Exception ex)
             {
@@ -58,9 +62,52 @@ namespace MatchService.Contollers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("getbyid/{teamId}/matches")]
+        public ActionResult<Team> GetByIdMatches(long teamId)
+        {
+            try
+            {
+                return Ok(_matchService.GetAll().Where(x => x.Team1Id == teamId || x.Team2Id == teamId));
+            }
+            catch (Exception ex)
+            {
+                if (ex is GetException)
+                {
+                    return StatusCode(503, "Database error: " + ex.Message);
+                }
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("getbyid/{teamId}/matches/{isWin}")]
+        public ActionResult<Team> GetByIdMatchesWin(long teamId, bool isWin)
+        {
+            try
+            {
+                if(isWin)
+                {
+                    long winStatus = _statusService.GetAll().Where(x => x.Name == "Win").Select(x => x.StatusId).FirstOrDefault();
+                    return Ok(_matchService.GetAll().Where(x =>( x.Team1Id == teamId || x.Team2Id == teamId) && x.StatusId == winStatus));
+                }
+                else
+                {
+                    long loseStatus = _statusService.GetAll().Where(x => x.Name == "Lose").Select(x => x.StatusId).FirstOrDefault();
+                    return Ok(_matchService.GetAll().Where(x => (x.Team1Id == teamId || x.Team2Id == teamId) && x.StatusId == loseStatus));
+                }
+             }
+            catch (Exception ex)
+            {
+                if (ex is GetException)
+                {
+                    return StatusCode(503, "Database error: " + ex.Message);
+                }
+                return StatusCode(500, ex.Message);
+            }
+        }
         [HttpPost]
-        [Route("Add")]
-        public async Task<ActionResult<AddTeamResponse>> Add(AddTeamRequest request)
+        [Route("add")]
+        public async Task<ActionResult<AddTeamResponse>> Add([FromBody]AddTeamRequest request)
         {
             try
             {
@@ -95,8 +142,8 @@ namespace MatchService.Contollers
         }
 
         [HttpPut]
-        [Route("Update")]
-        public ActionResult<UpdateTeamResponse> Update(UpdateTeamRequest request)
+        [Route("update")]
+        public ActionResult<UpdateTeamResponse> Update([FromBody]UpdateTeamRequest request)
         {
             try
             {
@@ -132,8 +179,8 @@ namespace MatchService.Contollers
         }
 
         [HttpDelete]
-        [Route("Delete")]
-        public ActionResult<DeleteTeamResponse> Delete(DeleteTeamRequest request)
+        [Route("delete")]
+        public ActionResult<DeleteTeamResponse> Delete([FromBody]DeleteTeamRequest request)
         {
             try
             {
