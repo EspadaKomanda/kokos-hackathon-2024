@@ -20,5 +20,6 @@ namespace MatchService.Database.Models
         public long? TeamRoleId { get; set; }
         [Required]
         public TeamRole TeamRole { get; set; }
+        public string? Country { get; set; }
     }
 }

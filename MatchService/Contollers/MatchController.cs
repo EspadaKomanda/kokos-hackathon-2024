@@ -11,6 +11,7 @@ using MatchService.Exceptions;
 using MatchService.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatchService.Contollers
 {
@@ -20,14 +21,15 @@ namespace MatchService.Contollers
     {
         //TODO: Add Logging
         private readonly IMatchService _matchService;
-
-        public MatchController(IMatchService matchService)
+        private readonly IStatusService _statusService;
+        public MatchController(IMatchService matchService, IStatusService statusService)
         {
             _matchService = matchService;
+            _statusService = statusService;
         }
         //FIXME: Add taking by pages
         [HttpGet]
-        [Route("GetAll")]
+        [Route("getall")]
         public ActionResult<IQueryable<Match>> GetAll()
         {
             try
@@ -46,14 +48,34 @@ namespace MatchService.Contollers
             }
 
         }
-
         [HttpGet]
-        [Route("GetById")]
-        public async Task<ActionResult<Match>> GetById(GetMatchByIdRequest request)
+        [Route("status/{statusId}")]
+        public ActionResult<IQueryable<Match>> GetAllStatus(long statusId)
         {
             try
             {
-                return Ok( await _matchService.FindById(request.MatchId));
+                Status status = _statusService.FindById(statusId).Result;
+                return Ok(_matchService.GetAll().Include(x=>x.Status).Where(x => x.Status == status));
+            }
+            catch (Exception ex)
+            {
+                if(ex is GetException)
+                {
+                    return StatusCode(503,"Database error: " + ex.Message);
+                }
+
+                return StatusCode(500,ex.Message);
+                
+            }
+
+        }
+        [HttpGet]
+        [Route("getbyid/{matchId}")]
+        public async Task<ActionResult<Match>> GetById(long matchId)
+        {
+            try
+            {
+                return Ok( await _matchService.FindById(matchId));
             }
             catch (Exception ex)
             {
@@ -68,8 +90,8 @@ namespace MatchService.Contollers
         }
 
         [HttpPost]
-        [Route("Add")]
-        public async Task<ActionResult<AddMatchResponse>> Add(AddMatchRequest request)
+        [Route("add")]
+        public async Task<ActionResult<AddMatchResponse>> Add([FromBody]AddMatchRequest request)
         {
             try
             {
@@ -109,8 +131,8 @@ namespace MatchService.Contollers
             }
         }
         [HttpDelete]
-        [Route("Delete")]
-        public ActionResult<DeleteMatchResponse> Delete(DeleteMatchRequest request)
+        [Route("delete")]
+        public ActionResult<DeleteMatchResponse> Delete([FromBody]DeleteMatchRequest request)
         {
             try
             {
@@ -140,8 +162,8 @@ namespace MatchService.Contollers
         }
 
         [HttpPut]
-        [Route("Update")]
-        public ActionResult<UpdateMatchResponse> Update(UpdateMatchRequest request)
+        [Route("update")]
+        public ActionResult<UpdateMatchResponse> Update([FromBody]UpdateMatchRequest request)
         {
             try
             {

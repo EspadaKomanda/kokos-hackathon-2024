@@ -9,6 +9,7 @@ using MatchService.Database.Models;
 using MatchService.Exceptions;
 using MatchService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatchService.Contollers
 {
@@ -18,14 +19,18 @@ namespace MatchService.Contollers
     {
         //TODO:Add Logging
         private readonly IPlayerService _playerService;
-
-        public PlayerController(IPlayerService playerService)
+        private readonly ITeamService _teamService;
+        private readonly IMatchService _matchService;
+        
+        public PlayerController(IPlayerService playerService, ITeamService teamService, IMatchService matchService)
         {
             _playerService = playerService;
+            _teamService = teamService;
+            _matchService = matchService;
         }
 
         [HttpGet]
-        [Route("GetAll")]
+        [Route("getall")]
         public ActionResult<IQueryable<Player>> GetAll()
         {
             try
@@ -42,29 +47,9 @@ namespace MatchService.Contollers
                 return StatusCode(500, ex.Message);
             }
         }
-
-        [HttpGet]
-        [Route("GetById")]
-        public async Task<ActionResult<Player>> GetById(GetPlayerByIdRequest request)
-        {
-            try
-            {
-                return Ok(await _playerService.FindById(request.PlayerId));
-            }
-            catch (Exception ex)
-            {
-                if (ex is GetException)
-                {
-                    return StatusCode(503, "Database error: " + ex.Message);
-                }
-
-                return StatusCode(500, ex.Message);
-            }
-        }
-
         [HttpPost]
-        [Route("Add")]
-        public async Task<ActionResult<AddPlayerResponse>> Add(AddPlayerRequest request)
+        [Route("add")]
+        public async Task<ActionResult<AddPlayerResponse>> Add([FromBody]AddPlayerRequest request)
         {
             try
             {
@@ -74,7 +59,8 @@ namespace MatchService.Contollers
                     {
                         TeamId = request.TeamId,
                         UserId = request.UserId,
-                        TeamRoleId = request.TeamRoleId
+                        TeamRoleId = request.TeamRoleId,
+                        Country = request.Country
                     }),
                     error = ""
                 });
@@ -98,8 +84,45 @@ namespace MatchService.Contollers
             }
         }
 
+        [HttpGet]
+        [Route("getbyid/{playerId}")]
+        public async Task<ActionResult<Player>> GetById(long playerId)
+        {
+            try
+            {
+                return Ok(await _playerService.FindById(playerId));
+            }
+            catch (Exception ex)
+            {
+                if (ex is GetException)
+                {
+                    return StatusCode(503, "Database error: " + ex.Message);
+                }
+
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("getbyid/{playerId}/matches")]
+        public  ActionResult<IQueryable<Match>> GetByIdMatches(long playerId)
+        {
+            try
+            {
+                long teamId = _teamService.GetAll().Include(x=>x.Players).Where(x => x.Players.Any(y => y.PlayerId == playerId)).Select(x => x.TeamId).FirstOrDefault();
+                return Ok(_matchService.GetAll().Where(x => x.Team1Id == teamId || x.Team2Id == teamId));
+            }
+            catch (Exception ex)
+            {
+                if (ex is GetException)
+                {
+                    return StatusCode(503, "Database error: " + ex.Message);
+                }
+
+                return StatusCode(500, ex.Message);
+            }
+        }
         [HttpPut]
-        [Route("Update")]
+        [Route("update")]
         public ActionResult<UpdatePlayerResponse> Update(UpdatePlayerRequest request)
         {
             try
@@ -111,7 +134,8 @@ namespace MatchService.Contollers
                         PlayerId = request.PlayerId,
                         TeamId = request.TeamId,
                         UserId = request.UserId,
-                        TeamRoleId = request.TeamRoleId
+                        TeamRoleId = request.TeamRoleId,
+                        Country = request.Country
                     }),
                     error = ""
                 });
@@ -136,7 +160,7 @@ namespace MatchService.Contollers
         }
 
         [HttpDelete]
-        [Route("Delete")]
+        [Route("delete")]
         public ActionResult<DeletePlayerResponse> Delete(DeletePlayerRequest request)
         {
             try

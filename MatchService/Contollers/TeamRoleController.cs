@@ -24,7 +24,7 @@ namespace MatchService.Contollers
         }
 
         [HttpGet]
-        [Route("GetAll")]
+        [Route("getall")]
         public ActionResult<IQueryable<TeamRole>> GetAll()
         {
             try
@@ -42,12 +42,12 @@ namespace MatchService.Contollers
         }
 
         [HttpGet]
-        [Route("GetById")]
-        public ActionResult<TeamRole> GetById(GetTeamRoleByIdRequest request)
+        [Route("getbyid/{teamRoleId}")]
+        public ActionResult<TeamRole> GetById(long teamRoleId)
         {
             try
             {
-                return Ok(_teamRoleService.FindById(request.TeamRoleId));
+                return Ok(_teamRoleService.FindById(teamRoleId));
             }
             catch (Exception ex)
             {
@@ -60,8 +60,8 @@ namespace MatchService.Contollers
         }
 
         [HttpPost]
-        [Route("Add")]
-        public async Task<ActionResult<AddTeamRoleResponse>> Add(AddTeamRoleRequest request)
+        [Route("add")]
+        public async Task<ActionResult<AddTeamRoleResponse>> Add([FromBody]AddTeamRoleRequest request)
         {
             try
             {
@@ -93,8 +93,8 @@ namespace MatchService.Contollers
         }
 
         [HttpDelete]
-        [Route("Delete")]
-        public ActionResult<DeleteTeamRoleResponse> Delete(DeleteTeamRoleRequest request)
+        [Route("delete")]
+        public ActionResult<DeleteTeamRoleResponse> Delete([FromBody]DeleteTeamRoleRequest request)
         {
             try
             {
@@ -123,8 +123,8 @@ namespace MatchService.Contollers
             
         }
         [HttpPut]
-        [Route("Update")]
-        public ActionResult<UpdateTeamRoleResponse> Update(UpdateTeamRoleRequest request)
+        [Route("update")]
+        public ActionResult<UpdateTeamRoleResponse> Update([FromBody]UpdateTeamRoleRequest request)
         {
             try
             {

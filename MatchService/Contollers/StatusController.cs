@@ -20,7 +20,7 @@ namespace MatchService.Contollers
             _statusService = statusService;
         }
         [HttpGet]
-        [Route("GetAll")]
+        [Route("getall")]
         public ActionResult<IQueryable<Status>> GetAll()
         {
             try
@@ -38,12 +38,12 @@ namespace MatchService.Contollers
             }
         }
         [HttpGet]
-        [Route("GetById")]
-        public async Task<ActionResult<Status>> GetById(GetStatusByIdRequest request)
+        [Route("getbyid/{statusId}")]
+        public async Task<ActionResult<Status>> GetById(long statusId)
         {
             try
             {
-                return Ok( await _statusService.FindById(request.StatusId));
+                return Ok( await _statusService.FindById(statusId));
             }
             catch (Exception ex)
             {  
@@ -56,8 +56,8 @@ namespace MatchService.Contollers
             }
         }
         [HttpPost]
-        [Route("Add")]
-        public async Task<ActionResult<AddStatusResponse>> Add(AddStatusRequest request)
+        [Route("add")]
+        public async Task<ActionResult<AddStatusResponse>> Add([FromBody]AddStatusRequest request)
         {
             try
             {
@@ -90,8 +90,8 @@ namespace MatchService.Contollers
         }
 
         [HttpPut]
-        [Route("Update")]
-        public ActionResult<UpdateStatusResponse> Update(UpdateStatusRequest request)
+        [Route("update")]
+        public ActionResult<UpdateStatusResponse> Update([FromBody]UpdateStatusRequest request)
         {
             try
             {
@@ -126,8 +126,8 @@ namespace MatchService.Contollers
         }
 
         [HttpDelete]
-        [Route("Delete")]
-        public ActionResult<DeleteStatusResponse> Delete(DeleteStatusRequest request)
+        [Route("delete")]
+        public ActionResult<DeleteStatusResponse> Delete([FromBody]DeleteStatusRequest request)
         {
             try
             {
