@@ -27,11 +27,7 @@ class ChannelService:
             enable_sniff=False
         )
 
-        admins = self.adminService.getAdmins()
-
-        for admin in admins:
-            # TODO: Notify admin
-            pass
+        await self.adminService.notifyAdmins(f"Added channel '{chat.title}' ({chat.id})")
 
     def getChannels(self):
         """
