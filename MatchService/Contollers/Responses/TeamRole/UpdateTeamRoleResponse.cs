@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MatchService.Contollers.Responses.TeamRole
 {
-    public class UpdateTeamResponse
+    public class UpdateTeamRoleResponse
     {
         public bool success {get; set;}
         public string? error {get;set;}

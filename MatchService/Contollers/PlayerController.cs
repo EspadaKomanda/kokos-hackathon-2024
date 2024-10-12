@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MatchService.Contollers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("players")]
     public class PlayerController : ControllerBase
     {
         //TODO:Add Logging
@@ -30,7 +30,7 @@ namespace MatchService.Contollers
         }
 
         [HttpGet]
-        [Route("getall")]
+        [Route("")]
         public ActionResult<IQueryable<Player>> GetAll()
         {
             try
@@ -48,7 +48,7 @@ namespace MatchService.Contollers
             }
         }
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         public async Task<ActionResult<AddPlayerResponse>> Add([FromBody]AddPlayerRequest request)
         {
             try
@@ -85,7 +85,7 @@ namespace MatchService.Contollers
         }
 
         [HttpGet]
-        [Route("getbyid/{playerId}")]
+        [Route("{playerId}")]
         public async Task<ActionResult<Player>> GetById(long playerId)
         {
             try
@@ -103,7 +103,7 @@ namespace MatchService.Contollers
             }
         }
         [HttpGet]
-        [Route("getbyid/{playerId}/matches")]
+        [Route("{playerId}/matches")]
         public  ActionResult<IQueryable<Match>> GetByIdMatches(long playerId)
         {
             try

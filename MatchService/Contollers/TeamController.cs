@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MatchService.Contollers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("teams")]
     public class TeamController : ControllerBase
     {
         //TODO: Add Logging
@@ -28,7 +28,7 @@ namespace MatchService.Contollers
         }
 
         [HttpGet]
-        [Route("getall")]
+        [Route("")]
         public ActionResult<IQueryable<Team>> GetAll()
         {
             try
@@ -46,7 +46,7 @@ namespace MatchService.Contollers
         }
 
         [HttpGet]
-        [Route("getbyid/{teamId}")]
+        [Route("{teamId}")]
         public ActionResult<Team> GetById(long teamId)
         {
             try
@@ -63,7 +63,7 @@ namespace MatchService.Contollers
             }
         }
         [HttpGet]
-        [Route("getbyid/{teamId}/matches")]
+        [Route("{teamId}/matches")]
         public ActionResult<Team> GetByIdMatches(long teamId)
         {
             try
@@ -80,7 +80,7 @@ namespace MatchService.Contollers
             }
         }
         [HttpGet]
-        [Route("getbyid/{teamId}/matches/{isWin}")]
+        [Route("{teamId}/matches/{isWin}")]
         public ActionResult<Team> GetByIdMatchesWin(long teamId, bool isWin)
         {
             try
@@ -106,7 +106,7 @@ namespace MatchService.Contollers
             }
         }
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         public async Task<ActionResult<AddTeamResponse>> Add([FromBody]AddTeamRequest request)
         {
             try

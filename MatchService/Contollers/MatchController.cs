@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MatchService.Contollers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("matches")]
     public class MatchController : ControllerBase
     {
         //TODO: Add Logging
@@ -29,7 +29,7 @@ namespace MatchService.Contollers
         }
         //FIXME: Add taking by pages
         [HttpGet]
-        [Route("getall")]
+        [Route("")]
         public ActionResult<IQueryable<Match>> GetAll()
         {
             try
@@ -70,7 +70,7 @@ namespace MatchService.Contollers
 
         }
         [HttpGet]
-        [Route("getbyid/{matchId}")]
+        [Route("{matchId}")]
         public async Task<ActionResult<Match>> GetById(long matchId)
         {
             try
@@ -90,7 +90,7 @@ namespace MatchService.Contollers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         public async Task<ActionResult<AddMatchResponse>> Add([FromBody]AddMatchRequest request)
         {
             try
@@ -131,13 +131,13 @@ namespace MatchService.Contollers
             }
         }
         [HttpDelete]
-        [Route("delete")]
-        public ActionResult<DeleteMatchResponse> Delete([FromBody]DeleteMatchRequest request)
+        [Route("remove/{matchId}")]
+        public ActionResult<DeleteMatchResponse> Delete(long matchId)
         {
             try
             {
                 return Ok(new DeleteMatchResponse(){
-                    success= _matchService.Delete(_matchService.FindById(request.MatchId).Result),
+                    success= _matchService.Delete(_matchService.FindById(matchId).Result),
                     error = ""
                 });
             }
@@ -162,7 +162,7 @@ namespace MatchService.Contollers
         }
 
         [HttpPut]
-        [Route("update")]
+        [Route("")]
         public ActionResult<UpdateMatchResponse> Update([FromBody]UpdateMatchRequest request)
         {
             try
