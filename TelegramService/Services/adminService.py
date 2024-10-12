@@ -1,11 +1,13 @@
 import logging
+import asyncio
 from functools import wraps
 
 from aiogram.types import Message
 
 from config import ADMINS
-from Repos.adminRepo import AdminRepo
+from config import bot
 
+from Repos.adminRepo import AdminRepo
 from Exceptions.AdminService.UserIsNotAdminException import UserIsNotAdminException
 
 logger = logging.getLogger(__name__)
@@ -14,6 +16,7 @@ logger = logging.getLogger(__name__)
 class AdminService:
     def __init__(self):
         self.adminRepo = AdminRepo()
+        self.bot = bot
 
     def addAdminsFromArray(self, tg_ids):
         """
@@ -61,6 +64,21 @@ class AdminService:
         Get all admins.
         """
         return list(self.adminRepo.select())
+
+    @classmethod
+    async def notifyAdmins(self, text):
+        """
+        Send a message to all registered admins.
+        """
+        logger.info("To admins: %s", text)
+        tasks = [
+            bot.send_message(
+                chat_id=admin.tg_user_id,
+                text=text
+            )
+            for admin in self.getAdmins()
+        ]
+        await asyncio.gather(*tasks)
 
     def requiresAdmin(self, func):
         """
