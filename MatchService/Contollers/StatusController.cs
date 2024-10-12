@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MatchService.Contollers
 {
+    [Route("statuses")]
+    [ApiController]
     public class StatusController : ControllerBase
     {
         //TODO: Add Logging
@@ -20,7 +22,7 @@ namespace MatchService.Contollers
             _statusService = statusService;
         }
         [HttpGet]
-        [Route("getall")]
+        [Route("")]
         public ActionResult<IQueryable<Status>> GetAll()
         {
             try
@@ -38,7 +40,7 @@ namespace MatchService.Contollers
             }
         }
         [HttpGet]
-        [Route("getbyid/{statusId}")]
+        [Route("/{statusId}")]
         public async Task<ActionResult<Status>> GetById(long statusId)
         {
             try

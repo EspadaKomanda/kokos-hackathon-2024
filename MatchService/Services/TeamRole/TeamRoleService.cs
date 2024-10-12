@@ -8,7 +8,7 @@ using MatchService.Repository;
 
 namespace MatchService.Services
 {
-    public class TeamRoleService
+    public class TeamRoleService : ITeamRoleService
     {
         //TODO: Add Logging
         private readonly IRepository<TeamRole> _repository;
