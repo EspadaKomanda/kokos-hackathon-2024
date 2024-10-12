@@ -2,6 +2,10 @@ from sys import exit
 from os import getenv
 from dotenv import load_dotenv
 
+from aiogram import Bot
+from aiogram.enums import ParseMode
+from aiogram.client.default import DefaultBotProperties
+
 load_dotenv(override=False)
 
 """
@@ -33,3 +37,10 @@ ADMINS = [int(admin_id) for admin_id in list((getenv("ADMINS") or "").split(",")
 # TIMEZONE - Your timezone.
 #    (Default: Europe/Moscow)
 TIMEZONE = getenv("TIMEZONE") or "Europe/Moscow"
+
+# BOT
+
+bot = Bot(
+    token=TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+)
