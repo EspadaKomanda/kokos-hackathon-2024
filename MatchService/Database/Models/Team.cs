@@ -13,6 +13,5 @@ namespace MatchService.Database.Models
         [Required]
         public string Name {get;set;}
         public ICollection<Player>? Players {get;set;}
-        public ICollection<Match>? Matches {get;set;}
-    }
+   }
 }

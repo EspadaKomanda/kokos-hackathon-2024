@@ -11,12 +11,12 @@ namespace MatchService.Database.Models
     {
         [Key]
         public long MatchId { get; set; }
-        [ForeignKey("Team1")]
+        [ForeignKey("Team1Id")]
         public long Team1Id { get; set; }
-        public Team Team1 { get; set; }
-        [ForeignKey("Team2")]
+        public virtual Team Team1 { get; set; }
+        [ForeignKey("Team2Id")]
         public long Team2Id { get; set; }
-        public Team Team2 { get; set; }
+        public virtual Team Team2 { get; set; }
         [ForeignKey("StatusId")]
         public long StatusId { get; set; }
         public Status Status { get; set; }

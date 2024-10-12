@@ -24,7 +24,15 @@ namespace MatchService.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        
+            
+            modelBuilder.Entity<Player>()
+            .HasOne(p => p.Team)
+            .WithMany(t => t.Players)
+            .HasForeignKey(p => p.TeamId);
+            modelBuilder.Entity<Player>()
+            .HasOne(p => p.TeamRole)
+            .WithMany(t => t.Players)
+            .HasForeignKey(p => p.TeamRoleId);
         }
     } 
 }

@@ -10,6 +10,5 @@ namespace MatchService.Contollers.Requests.Team
     {
         public string Name { get; set; }
         public List<MatchService.Database.Models.Player>? Players { get; set; }
-        public List<MatchService.Database.Models.Match>? Matches { get; set; }
-    }
+   }
 }

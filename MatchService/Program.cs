@@ -14,9 +14,9 @@ Func<LokiSinkConfiguration> configFactory = () =>
 {
     return new LokiSinkConfiguration
     {
-        LokiUrl = Environment.GetEnvironmentVariable("LOKI_URL") ?? "http://loki:3100",
-        LokiUsername = Environment.GetEnvironmentVariable("LOKI_USERNAME") ?? "loki_username",
-        LokiPassword = Environment.GetEnvironmentVariable("LOKI_PASSWORD") ?? "loki_password",
+        LokiUrl = Environment.GetEnvironmentVariable("LOKI_URL") ?? "http://212.109.196.0:3100",
+        LokiUsername = Environment.GetEnvironmentVariable("LOKI_USERNAME") ?? "root",
+        LokiPassword = Environment.GetEnvironmentVariable("LOKI_PASSWORD") ?? "root1234###",
         LogLabelProvider = new LogLabelProvider(),
         HttpClient = new LokiMatchHttpClient(),
         Period = TimeSpan.FromSeconds(10)
@@ -29,15 +29,15 @@ configureLogging();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddStackExchangeRedisCache(options => {
-    options.Configuration =  Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING") ?? "localhost:6379";
-    options.InstanceName =  Environment.GetEnvironmentVariable("REDIS_INSTANCE_NAME") ?? "default";
+    options.Configuration =  Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING") ?? "212.109.196.0:6379";
+    options.InstanceName =  Environment.GetEnvironmentVariable("REDIS_INSTANCE_NAME") ?? "match";
 });
 builder.Services.AddDbContext<ApplicationContext>(x => {
-    var Hostname=Environment.GetEnvironmentVariable("DB_HOSTNAME") ?? "localhost";
+    var Hostname=Environment.GetEnvironmentVariable("DB_HOSTNAME") ?? "212.109.196.0";
     var Port=Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
-    var Name=Environment.GetEnvironmentVariable("DB_NAME") ?? "postgres";
+    var Name=Environment.GetEnvironmentVariable("DB_NAME") ?? "matchdb";
     var Username=Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
-    var Password=Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "postgres";
+    var Password=Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "QWERTYUIO2313";
     x.UseNpgsql($"Server={Hostname}:{Port};Database={Name};Uid={Username};Pwd={Password};");
 });
 builder.Services.AddCors(options => 
