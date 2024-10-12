@@ -29,12 +29,12 @@ namespace MatchService.Contollers
         }
         //FIXME: Add taking by pages
         [HttpGet]
-        [Route("")]
-        public ActionResult<IQueryable<Match>> GetAll()
+        [Route("{pageNumber}")]
+        public ActionResult<IQueryable<Match>> GetAll(int pageNumber)
         {
             try
             {
-                return Ok(_matchService.GetAll());
+                return Ok(_matchService.GetAll(pageNumber));
             }
             catch (Exception ex)
             {
