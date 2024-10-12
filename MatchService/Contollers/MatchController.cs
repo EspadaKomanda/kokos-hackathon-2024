@@ -70,7 +70,7 @@ namespace MatchService.Contollers
 
         }
         [HttpGet]
-        [Route("{matchId}")]
+        [Route("getbyid/{matchId}")]
         public async Task<ActionResult<Match>> GetById(long matchId)
         {
             try
