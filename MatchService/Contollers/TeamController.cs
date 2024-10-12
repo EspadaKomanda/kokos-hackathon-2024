@@ -87,13 +87,11 @@ namespace MatchService.Contollers
             {
                 if(isWin)
                 {
-                    long winStatus = _statusService.GetAll().Where(x => x.Name == "Win").Select(x => x.StatusId).FirstOrDefault();
-                    return Ok(_matchService.GetAll().Where(x =>( x.Team1Id == teamId || x.Team2Id == teamId) && x.StatusId == winStatus));
+                    return Ok(_matchService.GetAll().Where(x =>( x.Team1Id == teamId || x.Team2Id == teamId) && (x.Result.Contains("Win") && x.Result.Contains("Team" + teamId))));
                 }
                 else
                 {
-                    long loseStatus = _statusService.GetAll().Where(x => x.Name == "Lose").Select(x => x.StatusId).FirstOrDefault();
-                    return Ok(_matchService.GetAll().Where(x => (x.Team1Id == teamId || x.Team2Id == teamId) && x.StatusId == loseStatus));
+                    return Ok(_matchService.GetAll().Where(x => (x.Team1Id == teamId || x.Team2Id == teamId) && !x.Result.Contains("Team" + teamId)));
                 }
              }
             catch (Exception ex)
