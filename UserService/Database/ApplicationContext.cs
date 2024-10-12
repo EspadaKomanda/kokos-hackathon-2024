@@ -14,11 +14,6 @@ public class ApplicationContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<User>().ToTable("User");
-    modelBuilder.Entity<Profile>().ToTable("Profile");
-    modelBuilder.Entity<Role>().ToTable("Role");
-    modelBuilder.Entity<Subscription>().ToTable("Subscription");
-
     // In subscriptions FanId and PlayerId must be unique together
     modelBuilder.Entity<Subscription>()
       .HasIndex(x => new { x.FanId, x.PlayerId })

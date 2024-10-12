@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserService.Database.Models;
 
@@ -7,21 +8,17 @@ public class User
   [Key]
   public int Id { get; set; }
 
-  [Required]
   public string Name { get; set;} = null!;
 
-  [Required]
   public string Email { get; set; } = null!;
 
-  [Required]
   public string Password { get; set; } = null!;
 
-  [Required]
+  [ForeignKey("RoleId")]
   public int RoleId { get; set; }
   public Role Role { get; set; } = null!;
-
+  [ForeignKey("ProfileId")]
   public int ProfileId { get; set; }
   public Profile Profile { get; set; } = null!;
 
-  public DateTime RefreshTokenTime { get; set; }
 }
