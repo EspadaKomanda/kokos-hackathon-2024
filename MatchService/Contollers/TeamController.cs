@@ -116,8 +116,7 @@ namespace MatchService.Contollers
                     success = await _teamService.Add(new Team()
                     {
                         Name = request.Name,
-                        Players = request.Players,
-                        Matches = request.Matches
+                        Players = request.Players
                     }),
                     error = ""
                 });
@@ -153,8 +152,7 @@ namespace MatchService.Contollers
                     {
                         TeamId = request.TeamId,
                         Name = request.Name,
-                        Players = request.Players,
-                        Matches = request.Matches
+                        Players = request.Players
                     }),
                     error = ""
                 });
